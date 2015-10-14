@@ -27,6 +27,10 @@ def sse_source():
             event_stream(),
             mimetype='text/event-stream')
 
+import pyorient
+
+app = Flask(__name__)
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -46,6 +50,11 @@ def getData():
 	print "received coordinates: [" + lat1 + ", " + lat2 + "], [" + lng1 + ", " + lng2 + "]"
 	
 	client = pyorient.OrientDB("localhost", 2424)
+	session_id = client.connect("root", "wujiachuan")
+	db_name = "soufun"
+	
+
+	client = pyorient.OrientDB("localhost", 2424)
 	session_id = client.connect("root", "password")
 	db_name = "property_test"
 	db_username = "admin"
@@ -57,6 +66,12 @@ def getData():
 	else:
 		print "database [" + db_name + "] does not exist! session ending..."
 		sys.exit()
+
+	lat1 = 22.532498
+	lat2 = 22.552317
+
+	lng1 = 114.044329
+	lng2 = 114.076644
 
 	query = 'SELECT FROM Listing WHERE latitude BETWEEN {} AND {} AND longitude BETWEEN {} AND {}'
 
